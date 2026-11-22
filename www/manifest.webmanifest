@@ -1,0 +1,19 @@
+{
+  "name": "Expressing Fantasy",
+  "short_name": "Expressing Fantasy",
+  "description": "Juego de mundo abierto 3D por Justin Manuel Nolasco «Mano» y Jhoniber De la Cruz",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#0b1620",
+  "theme_color": "#0b1620",
+  "lang": "es",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

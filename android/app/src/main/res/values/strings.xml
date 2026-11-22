@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Expressing Fantasy</string>
+    <string name="title_activity_main">Expressing Fantasy</string>
+    <string name="package_name">com.jhoniber.expressingfantasy.web</string>
+    <string name="custom_url_scheme">com.jhoniber.expressingfantasy.web</string>
+</resources>

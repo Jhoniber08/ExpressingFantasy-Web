@@ -1,0 +1,16 @@
+{
+  "name": "expressingfantasy-web",
+  "version": "11.1.0",
+  "private": true,
+  "description": "Expressing Fantasy v11.1 — APK Android (Capacitor). Por Jhoniber De la Cruz y Justin Manuel Nolasco «Mano».",
+  "scripts": {
+    "sync": "cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "6.2.1",
+    "@capacitor/core": "6.2.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "6.2.1"
+  }
+}

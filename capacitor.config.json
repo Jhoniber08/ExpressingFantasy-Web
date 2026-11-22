@@ -1,0 +1,14 @@
+{
+  "appId": "com.jhoniber.expressingfantasy.web",
+  "appName": "Expressing Fantasy",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#0b1620",
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

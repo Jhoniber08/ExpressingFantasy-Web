@@ -1,0 +1,87 @@
+# Expressing Fantasy — compila la APK de Android en cada push a main
+# Por Jhoniber De la Cruz y Justin Manuel Nolasco «Mano»
+name: Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: false
+
+env:
+  # Firma: SIEMPRE la misma clave (keystore/expressingfantasy.p12 en el repo)
+  EF_KEY_ALIAS: expressingfantasy
+  EF_STORE_PASSWORD: EFantasyMano2026
+  EF_KEY_PASSWORD: EFantasyMano2026
+  VERSION_CODE: ${{ github.run_number }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Plataforma Android 34
+        run: sdkmanager "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Instalar Capacitor
+        run: npm ci
+
+      - name: Copiar el juego (www) al proyecto Android
+        run: npx cap sync android
+
+      - name: Compilar APK release firmada
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: Verificar firma y preparar archivo
+        run: |
+          APK=android/app/build/outputs/apk/release/app-release.apk
+          test -f "$APK"
+          "$ANDROID_HOME"/build-tools/34.0.0/apksigner verify --print-certs "$APK"
+          cp "$APK" ExpressingFantasy-Web.apk
+          ls -lh ExpressingFantasy-Web.apk
+
+      - name: Subir como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: ExpressingFantasy-Web-${{ github.run_number }}
+          path: ExpressingFantasy-Web.apk
+
+      - name: Publicar en Releases (última versión)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v11.1.${{ github.run_number }}
+          name: Expressing Fantasy v11.1 (build ${{ github.run_number }})
+          body: |
+            APK de Android de Expressing Fantasy v11.1 — build ${{ github.run_number }}.
+            Por Jhoniber De la Cruz y Justin Manuel Nolasco «Mano».
+            Descarga directa: https://github.com/${{ github.repository }}/releases/latest/download/ExpressingFantasy-Web.apk
+          files: ExpressingFantasy-Web.apk
+          make_latest: true
