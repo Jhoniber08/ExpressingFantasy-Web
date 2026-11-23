@@ -85,3 +85,29 @@ jobs:
             Descarga directa: https://github.com/${{ github.repository }}/releases/latest/download/ExpressingFantasy-Web.apk
           files: ExpressingFantasy-Web.apk
           make_latest: true
+
+  # Versión web gratis en GitHub Pages (mismo juego, se actualiza con cada push)
+  pages:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir la carpeta www
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: www
+
+      - name: Publicar en GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
